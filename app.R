@@ -20,7 +20,8 @@ ui <- dashboardPage(
         sidebarMenu(
             menuItem("Press the button when ready"),
             menuItem(submitButton("Submit")),
-            menuItem("When ready go to the Results tab")
+            menuItem("When ready go to the Results tab"),
+            menuItem("Code for App @ GitHub",href="https://github.com/algom/devejh", icon=icon("github"))
         )
     ),
             
@@ -99,24 +100,13 @@ ui <- dashboardPage(
                 ),
                 
                 
-#                         tabPanel("Results", value="panel2",
-#                                  h5("Weight entered in kg"),
-#                                  verbatimTextOutput("weight"),
-#                                  h5("Height entered in meters"),
-#                                  verbatimTextOutput("height"),
-#                                  h5("Your BMI is:"),
-#                                  verbatimTextOutput("bmi"),
-#                                  h5("With this value the", strong("BMI"), "classifies as:"),
-#                                  verbatimTextOutput("predi"),
-#                                  hr(),
-#                                  h4("More information about the results can be found at:"))
+
                 h5(em("Project for the", strong("Developing Data Products"), "class of the Johns Hopkins University Data Science specialization")),
                 h4("October 2015 by", strong("AG"))
             )
         )
     )
 )
-#)
 
 ####Start of needed functions to calculate the BMI and construct the graph. Note need to be inside of server as should be static
 #BMI function
@@ -162,9 +152,6 @@ predi <- function(weight, height) {
     colnames(x) <- h
     #Melt the graph for plotting with ggplot
     meltx <- melt(x)
-    
-    #Basic graph 1
-    #ggplot(meltx, aes(X2, X1)) + geom_tile(aes(fill=value)) + scale_fill_gradient(low="green", high="darkred")
     
     #Add categories, depending on values
     meltx$cate[meltx$value < 18.5] <- "Underweight"
@@ -246,14 +233,7 @@ server <- function(input, output, session) {
     
 }    
    
-    
-#     output$weight <- renderPrint({input$weight})
-#     output$height <- renderPrint({input$height})
-#     output$bmi <- renderPrint({bmip(input$weight, input$height)})
-#     output$predi <- renderPrint({predi(input$weight, input$height)})
-#     
-# }
-
+   
 shinyApp(ui = ui, server = server)
 
 
