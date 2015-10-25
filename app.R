@@ -165,7 +165,7 @@ meltx <- melt(x)
 #Add categories, depending on values
 meltx$cate[meltx$value < 18.5] <- "Underweight"
 meltx$cate[meltx$value > 18.5 & meltx$value < 25] <- "Normal_weight"
-meltx$cate[meltx$value > 25 & meltx$value < 30] <- "Overweight"
+meltx$cate[meltx$value >= 25 & meltx$value < 30] <- "Overweight"
 meltx$cate[meltx$value >= 30] <- "Obese"
 
 #Make category as factor
@@ -217,7 +217,7 @@ server <- function(input, output, session) {
         colo <- c("lime")
     } else if (bmit() > 18.5 & bmit() < 25) { 
         colo <- c("green")
-    } else if (bmit() > 25 & bmit() < 30) {
+    } else if (bmit() >= 25 & bmit() < 30) {
         colo <- c("orange")
     } else 
         colo <- c("red")
