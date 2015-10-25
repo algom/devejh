@@ -1,4 +1,4 @@
-#Shiny App code to generate a BMI chart with categories
+#Shiny App code to generate a BMI chart with categories by AG
 #Load necessary libraries
 library(shiny)
 library(ggplot2)
