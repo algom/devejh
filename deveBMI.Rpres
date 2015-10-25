@@ -56,9 +56,9 @@ With this value the **BMI** classifies as:
 ```{r, echo=FALSE}
 if (bmi < 18.5) {
    "Underweight"
-} else if (bmi > 18.5 & bmi < 24.5 ) {
+} else if (bmi > 18.5 & bmi < 25 ) {
    "Normal weight"
-} else if (bmi > 24.5 & bmi < 30) {
+} else if (bmi > 25 & bmi < 30) {
    "Overweight"
 } else
    "Obese"
@@ -102,8 +102,8 @@ library(reshape)
     
     #Add categories, depending on values
     meltx$cate[meltx$value < 18.5] <- "Underweight"
-    meltx$cate[meltx$value > 18.5 & meltx$value < 24.5] <- "Normal_weight"
-    meltx$cate[meltx$value > 24.5 & meltx$value < 30] <- "Overweight"
+    meltx$cate[meltx$value > 18.5 & meltx$value < 25] <- "Normal_weight"
+    meltx$cate[meltx$value > 25 & meltx$value < 30] <- "Overweight"
     meltx$cate[meltx$value >= 30] <- "Obese"
     
     #Make category as factor

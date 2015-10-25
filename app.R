@@ -51,8 +51,8 @@ ui <- dashboardPage(
                                 Using the value obtained as", strong("BMI"), "an individual can be categorized as being:"),
                              tags$ul(
                                  tags$li(strong("Underweight"), "- below 18.5"),
-                                 tags$li(strong("Normal weight"), "- between 18.5-24.5"),
-                                 tags$li(strong("Overweight"), " - more than 24.5 but less than 30"),
+                                 tags$li(strong("Normal weight"), "- between 18.5-25"),
+                                 tags$li(strong("Overweight"), " - more than 25 but less than 30"),
                                  tags$li(strong("Obese"), "- more than 30")
                              ),
                              h5("Using the input the App calculates the BMI and reports:"),
@@ -126,9 +126,9 @@ bmip <- function(weight, height) {
 predi <- function(weight, height) {
     if (weight/(height^2) < 18.5) {
         "Underweight"
-    } else if (weight/(height^2) > 18.5 & weight/(height^2) < 24.5 ) {
+    } else if (weight/(height^2) > 18.5 & weight/(height^2) < 25 ) {
         "Normal weight"
-    } else if (weight/(height^2) > 24.5 & weight/(height^2) < 30) {
+    } else if (weight/(height^2) > 25 & weight/(height^2) < 30) {
         "Overweight"
     } else
         "Obese"
@@ -164,8 +164,8 @@ meltx <- melt(x)
 
 #Add categories, depending on values
 meltx$cate[meltx$value < 18.5] <- "Underweight"
-meltx$cate[meltx$value > 18.5 & meltx$value < 24.5] <- "Normal_weight"
-meltx$cate[meltx$value > 24.5 & meltx$value < 30] <- "Overweight"
+meltx$cate[meltx$value > 18.5 & meltx$value < 25] <- "Normal_weight"
+meltx$cate[meltx$value > 25 & meltx$value < 30] <- "Overweight"
 meltx$cate[meltx$value >= 30] <- "Obese"
 
 #Make category as factor
@@ -215,9 +215,9 @@ server <- function(input, output, session) {
     #Function that generates the color and puts it in a vector
     col <- reactive({ if (bmit() < 18.5) {
         colo <- c("lime")
-    } else if (bmit() > 18.5 & bmit() < 24.5) { 
+    } else if (bmit() > 18.5 & bmit() < 25) { 
         colo <- c("green")
-    } else if (bmit() > 24.5 & bmit() < 30) {
+    } else if (bmit() > 25 & bmit() < 30) {
         colo <- c("orange")
     } else 
         colo <- c("red")
