@@ -804,6 +804,8 @@ hljs.initHighlightingOnLoad();
 <li><a href="https://github.com/algom/devejh">https://github.com/algom/devejh</a></li>
 </ul>
 
+<p><em>Presentation done with R Studio R Presentations</em></p>
+
 </div>
 
 </section>
@@ -839,8 +841,14 @@ hljs.initHighlightingOnLoad();
 <p>\( BMI = weight/height^{2} \)</p>
 
 <ul>
-<li>Expressed in SI units of <strong>kg/m2</strong></li>
+<li><p>Expressed in SI units of <strong>kg/m2</strong></p></li>
+<li><p>The app also calclulate sthe Resting Metabolic Rate (RMR) using the Mifflin - St Jeor equation, expressed in <strong>kcal/day</strong></p></li>
 </ul>
+
+<p>Male
+\( RMR = (9.99*weight) + (6.25*height) - (5*age) + 5 \) 
+Female
+\( RMR = (9.99*weight) + (6.25*height) - (5*age) - 161 \) </p>
 
 </div>
 
@@ -849,7 +857,7 @@ hljs.initHighlightingOnLoad();
 <h3>BMI calculation using the Shiny app</h3>
 <div class="slideContent" >
 <ul>
-<li>The individual inputs a weight of <strong>70kg</strong> and height of <strong>1.70m</strong></li>
+<li>For eg. the individual inputs a weight of <strong>70kg</strong> and height of <strong>1.70m</strong></li>
 <li>The app will recognize those as <em>input$weight</em> and <em>input$height</em>, calculates the BMI and classifies an individual in one of the <strong>4</strong> <em>BMI</em> categories, using <em>ifelse</em> statements, eg:</li>
 </ul>
 
@@ -863,7 +871,7 @@ hljs.initHighlightingOnLoad();
 <pre><code>[1] &quot;Normal weight&quot;
 </code></pre>
 
-<p>It then usese this information to create a more graphical representation</p>
+<p>It then usese this information to create a more graphical representation, using ggplot2</p>
 
 </div>
 
@@ -872,7 +880,7 @@ hljs.initHighlightingOnLoad();
 <h3>Shinying the BMI</h3>
 <div class="mediaInline slideContent" >
 <ul>
-<li>The <strong>Shiny</strong> app then generates a category color coded BMI chart </li>
+<li>The <strong>Shiny</strong> app then generates a category color coded BMI chart</li>
 <li>It shows the calculated <strong>BMI</strong>, localized at the appropiate category, showing how close/far this is from the optimum</li>
 </ul>
 
