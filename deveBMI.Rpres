@@ -1,0 +1,140 @@
+Body Mass index calculator
+========================================================
+author: AG
+date: October 2015
+**Generation of a BMI calculator using a Shiny app**
+* [https://agcode.shinyapps.io/myapp] (https://agcode.shinyapps.io/myapp)
+* [https://github.com/algom/devejh] (https://github.com/algom/devejh)
+
+*Presentation done with R Studio R Presentations*
+
+Body Mass Index (BMI)
+========================================================
+
+The body mass index **(BMI)** is a quantity value, based on the weight and hight of men and women.
+
+
+- Quantifies tissue mass
+- Categorizes individuals as 
+ - **Underweight (<18.5)**
+ - **Normal weight (18.5-25)**
+ - **Overweight (25-30)**
+ - **Obese (>30)**
+ 
+###### [What use is the BMI? http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2065990/] (http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2065990/)
+
+BMI calculation
+========================================================
+
+- It is calculated by dividing body mass *(kg)* divided by the square of the body height *(m)*
+
+$BMI = weight/height^{2}$
+
+- Expressed in SI units of **kg/m2**
+
+- The app also calclulate sthe Resting Metabolic Rate (RMR) using the Mifflin - St Jeor equation, expressed in **kcal/day**
+
+Male
+$RMR = (9.99*weight) + (6.25*height) - (5*age) + 5$ 
+Female
+$RMR = (9.99*weight) + (6.25*height) - (5*age) - 161$ 
+
+
+
+
+BMI calculation using the Shiny app
+========================================================
+- For eg. the individual inputs a weight of **70kg** and height of **1.70m**
+- The app will recognize those as *input$weight* and *input$height*, calculates the BMI and classifies an individual in one of the **4** *BMI* categories, using *ifelse* statements, eg:
+
+Your BMI is:
+```{r, echo=FALSE}
+bmi <- 70/(1.70^2)
+bmi
+```
+With this value the **BMI** classifies as:
+```{r, echo=FALSE}
+if (bmi < 18.5) {
+   "Underweight"
+} else if (bmi > 18.5 & bmi < 24.5 ) {
+   "Normal weight"
+} else if (bmi > 24.5 & bmi < 30) {
+   "Overweight"
+} else
+   "Obese"
+```
+It then usese this information to create a more graphical representation, using ggplot2
+
+Shinying the BMI
+========================================================
+- The **Shiny** app then generates a category color coded BMI chart
+- It shows the calculated **BMI**, localized at the appropiate category, showing how close/far this is from the optimum
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(scales)
+library(reshape)
+#Chart
+    w <- c(35, 40, 45, 50 ,55,60, 65, 70,75,80,85,90,95,100,105,110,115,120, 125, 130)
+    h <- c(1.35, 1.40, 1.45, 1.50, 1.55, 1.60, 1.65, 1.70, 1.75, 1.80, 1.85, 1.90, 1.95, 2.00, 2.05, 2.10, 2.15, 2.20, 2.25, 2.30)
+#     w <- seq(from=40, to=130, by=0.1)
+#     h <- seq(from=1.35, to=2.25, by=0.001)
+    h2 <- h*h
+    
+    
+    #Create matrix with the dimensions of the weight and height
+    x <- matrix(0, length(w), length(h2))
+    #Create a function that calculates the BMI
+    sim <- function(w, h2) { 
+        w/h2
+    }
+    #Fill the matrix with a nested loop to get the BMI of every element of the matrix
+    for (j in 1:length(w)) {
+        for (i in 1:length(h2)) {
+            x[i,j] <- sim(w[i], h2[j])
+        }
+    }
+    #Add the row and column names based on weight and height
+    rownames(x) <- w
+    colnames(x) <- h
+    #Melt the graph for plotting with ggplot
+    meltx <- melt(x)
+    
+    #Add categories, depending on values
+    meltx$cate[meltx$value < 18.5] <- "Underweight"
+    meltx$cate[meltx$value > 18.5 & meltx$value < 24.5] <- "Normal_weight"
+    meltx$cate[meltx$value > 24.5 & meltx$value < 30] <- "Overweight"
+    meltx$cate[meltx$value >= 30] <- "Obese"
+    
+    #Make category as factor
+    meltx$cate <- as.factor(meltx$cate)
+    
+    #Original basic graph
+    #ggplot(meltx, aes(X2, X1)) + geom_tile(aes(fill=value))
+    
+    #Get the offset of the categories
+    meltx$rescaleoffset <- meltx$value + 100*(as.numeric(meltx$cate)-1)
+    #Get range of values
+    scalerange <- range(meltx$value)
+    #Range of categories
+    gradientends <- scalerange + rep(c(0,100,200,300), each=2)
+    #Gradients of categories
+    colorends <- c("#1a9850", "#006837", "#f46d43", "#d73027", "#a6d96a", "#66bd63")
+    #Create the rescale as vector
+    rescala <- rescale(gradientends)
+    #Label for the dot
+    etiq <- "Your BMI"
+    #Plot
+    environment<-environment() 
+    p <- ggplot(meltx, aes_string("X2", "X1"), environment = environment) + 
+        geom_tile(aes_string(fill = "rescaleoffset")) + 
+        scale_fill_gradientn(colours = colorends, values = rescala) +
+        scale_y_continuous(name="Weight (kg)", expand=c(0,0)) +
+        scale_x_continuous(name="Height (m)", expand=c(0,0)) +
+        theme_bw() +
+        theme(legend.position = "none", axis.text=element_text(size=12), axis.title = element_text(size=13), aspect.ratio=1)
+        p + geom_point(aes_string(x=1.7, y=70), size=5, alpha=1/100) +
+            geom_text(aes_string(x=1.7+0.13, y=70+3, label="etiq"), size=7, alpha=1/100)
+```
+
+Check it out at: [https://agcode.shinyapps.io/myapp] (https://agcode.shinyapps.io/myapp)
