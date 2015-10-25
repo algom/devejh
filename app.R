@@ -242,7 +242,7 @@ server <- function(input, output, session) {
     
     output$rmr <- renderValueBox({
         valueBox(round(if (input$radio == 1) (9.99 * input$weight) + (6.25 * input$height * 100) - (4.92 * input$age) + 5
-                 else (9.99 * input$weight) + (6.25 * input$height * 100) - (4.92 * input$age) + 161, digits=2), h6("Resting Metabolic Rate kcal/day"), col= col())
+                 else (9.99 * input$weight) + (6.25 * input$height * 100) - (4.92 * input$age) - 161, digits=2), h6("Resting Metabolic Rate kcal/day"), col= col())
     })
     
 }    
